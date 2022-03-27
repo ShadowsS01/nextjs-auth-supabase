@@ -9,12 +9,12 @@ import Avatar from '../Avatar';
 
 const MenuLogado = ({ profile }) => (
   <>
-    <div className='font-bold'>
+    <div className='font-bold -mr-1 transition-colors'>
       <Link href='/community'>
         <a className="hidden sm:flex bg-[length:400px_400px] bg-gradient-to-r 
-              from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent 
-              animate-[mygradient_3s_ease_infinite] hover:opacity-75 dark:hover:opacity-50
-              items-center self-center duration-300">
+              from-purple-600 via-blue-600 to-purple-600 hover:from-purple-600/30 hover:via-blue-600/30 
+              hover:to-purple-600/30 bg-clip-text text-transparent hover:bg-clip-padding hover:text-current 
+              rounded-md px-1 py-1 animate-[mygradient_3s_ease_infinite] items-center self-center duration-500">
           Comunidade
         </a>
       </Link>
@@ -42,13 +42,13 @@ const MenuLogado = ({ profile }) => (
               static
               className="font-medium origin-top-right absolute right-0 mt-2 w-48 rounded-md py-1 ring-1 
               ring-black ring-opacity-5 focus:outline-none bg-white/90 dark:bg-black/90 shadow-2xl 
-              dark:shadow-blue-900/80 shadow-blue-500/50 transition ease-in-out"
+              dark:shadow-blue-900/80 shadow-blue-500/50 transition-all ease-in-out text-center"
             >
               <Menu.Item>
                 {({ active }) => (
                   <Link href="/profile">
                     <a className={classNames(
-                      active ? '' : 'rounded-sm hover:opacity-50 duration-150',
+                      active ? '' : 'rounded-sm hover:text-blue-600 hover:bg-gray-300 dark:hover:bg-blue-600/10 duration-300',
                       'block px-4 py-2 text-sm'
                     )}>
                       Seu perfil
@@ -62,7 +62,7 @@ const MenuLogado = ({ profile }) => (
                     <Link href="/community">
                       <a
                         className={classNames(
-                          active ? '' : 'font-bold flex sm:hidden bg-[length:400px_400px] bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-[mygradient_3s_ease_infinite] rounded-sm hover:opacity-50 duration-150',
+                          active ? '' : 'flex sm:hidden font-bold justify-center bg-[length:400px_400px] bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-[mygradient_3s_ease_infinite] rounded-sm hover:from-blue-600/30 hover:via-purple-600/30 hover:to-blue-600/30 dark:hover:from-purple-600/10 dark:hover:via-blue-600/10 dark:hover:to-purple-600/10 hover:bg-clip-padding hover:text-current duration-500',
                           'block px-4 py-2 text-sm'
                         )}
                       >
@@ -75,9 +75,9 @@ const MenuLogado = ({ profile }) => (
               <Menu.Item>
                 <Link href=''>
                   <a onClick={() => supabase.auth.signOut()}
-                    className="font-medium text-left block w-48 px-4 py-2 text-sm rounded-sm 
-                    hover:text-red-600 duration-300">
-                    Sair
+                    className="font-medium text-left block w-48 px-4 py-2 text-sm rounded-sm
+                    hover:text-red-600 hover:bg-red-700/30 dark:hover:bg-red-600/10 text-center duration-300">
+                    Desconectar
                   </a>
                 </Link>
               </Menu.Item>
