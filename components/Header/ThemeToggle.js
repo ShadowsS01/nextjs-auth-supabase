@@ -27,7 +27,7 @@ export default function ThemeToggle() {
       onClick={() => setTheme(isDark() ? "light" : "dark")}
       aria-label="Theme toggle"
     >
-      {isDark() ? <BiSun size={26} /> : <BiMoon size={26} />}
+      {isDark() ? <BiSun size={25} /> : <BiMoon size={25} />}
     </button>
   );
 }

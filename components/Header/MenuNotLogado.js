@@ -7,7 +7,7 @@ import ThemeToggle from './ThemeToggle';
 
 const MenuNotLogado = () => (
   <div className="flex space-x-4">
-    <nav className="flex space-x-2 content-center items-center place-content-center">
+    <nav className="flex space-x-3 content-center items-center place-content-center">
       <div className='font-bold'>
         <Link href='/community'>
           <a className="hidden sm:flex bg-[length:400px_400px] bg-gradient-to-r 
@@ -18,19 +18,21 @@ const MenuNotLogado = () => (
           </a>
         </Link>
       </div>
-      <Link href="/login">
-        <a className="hidden sm:flex self-center px-2 py-1 font-medium hover:opacity-50 duration-300"
-        >
-          Login
-        </a>
-      </Link>
-      <Link href="/signup">
-        <a className="px-2 py-1 font-medium border rounded-lg border-black dark:border-white 
+      <div className='flex space-x-1 content-center items-center place-content-center'>
+        <Link href="/login">
+          <a className="hidden sm:flex self-center px-2 py-1 font-medium hover:opacity-50 duration-300"
+          >
+            Login
+          </a>
+        </Link>
+        <Link href="/signup">
+          <a className="px-2 py-1 font-medium border rounded-lg border-black dark:border-white 
           hover:opacity-50 flex self-center duration-300"
-        >
-          Registrar-se
-        </a>
-      </Link>
+          >
+            Registrar-se
+          </a>
+        </Link>
+      </div>
       <div className="hidden sm:inline">
         <ThemeToggle />
       </div>

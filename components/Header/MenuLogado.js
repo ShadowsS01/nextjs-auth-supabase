@@ -87,7 +87,7 @@ const MenuLogado = ({ profile }) => (
         </>
       )}
     </Menu >
-    <div className='flex'>
+    <div className='flex -ml-1'>
       <ThemeToggle />
     </div>
   </>
