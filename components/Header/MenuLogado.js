@@ -5,7 +5,6 @@ import classNames from '../../lib/classsesNames';
 import ThemeToggle from './ThemeToggle';
 import { supabase } from '../../lib/supabaseClient';
 
-import { Profile } from '../../lib/constants';
 import Avatar from '../Avatar';
 
 const MenuLogado = ({ profile }) => (

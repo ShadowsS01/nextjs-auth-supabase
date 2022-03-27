@@ -57,14 +57,16 @@ export default function Community() {
       </div>
       {!user ?
         <>
-          <p className='pb-4'>
-            Faça parte dos{' '}
-            <Link href='/login'>
-              <a className='text-blue-600 hover:underline'>
-                Perfis públicos
-              </a>
-            </Link>
-          </p>
+          {/* <div className='w-full border-b border-blue-600/30'> */}
+            <p className='pb-4 text-center selection:bg-blue-700/30 dark:selection:bg-blue-600/20'>
+              Faça parte dos{' '}
+              <Link href='/login'>
+                <a className='text-blue-600 hover:underline'>
+                  Perfis públicos
+                </a>
+              </Link>
+            </p>
+          {/* </div> */}
         </> :
         <></>
       }

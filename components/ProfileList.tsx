@@ -57,7 +57,14 @@ export default function ProfileList({ profiles }: ProfileListProps) {
   return (
     <>
       {state.profiles.length === 0 ? (
-        <p>Ainda não há perfis públicos criados</p>
+        <div className='flex flex-col w-full font-bold'>
+          <p className='text-center bg-[length:400px_400px] bg-gradient-to-r 
+              from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent 
+              animate-[mygradient_3s_ease_infinite] items-center self-center duration-300 
+              selection:bg-blue-600/30 dark:selection:bg-blue-600/10'>
+            Ainda não há perfis públicos criados
+          </p>
+        </div>
       ) : (
         <div className="flex flex-col w-full space-y-6">
           {state.profiles?.map((profile: any) => (
