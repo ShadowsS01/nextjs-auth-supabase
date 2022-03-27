@@ -64,7 +64,7 @@ function UpdateProfile() {
       }
 
       const { error: updatePError } = await supabase.auth.update({
-        data: { avatar_url: filePath }
+        data: { avatar: filePath }
       })
       if (updatePError) {
         setError(updatePError.message)
@@ -156,7 +156,7 @@ function UpdateProfile() {
           dark:border-transparent dark:bg-zinc-900 font-medium transition-colors duration-300">
 
           <Head>
-            {!user.user_metadata.username || !user.user_metadata.avatar_url ?
+            {!user.user_metadata.username || !user.user_metadata.avatar ?
               <title>Informações adicionais!</title>
               : <title>
                 Atualizar perfil!
@@ -168,7 +168,7 @@ function UpdateProfile() {
             <div>
               <h3 className='text-2xl font-semibold'
               >
-                {!user.user_metadata.username || !user.user_metadata.avatar_url ?
+                {!user.user_metadata.username || !user.user_metadata.avatar ?
                   <>Informações adicionais!</>
                   : <>
                     Atualizar perfil!
@@ -232,7 +232,7 @@ function UpdateProfile() {
               <div className='mt-6 flex text-sm sm:text-base font-medium sm:font-normal 
                   text-blue-600 selection:bg-blue-200 dark:selection:bg-blue-900/50 
                   dark:selection:text-blue-500'>
-                {!user.user_metadata.username | !user.user_metadata.avatar_url ?
+                {!user.user_metadata.username | !user.user_metadata.avatar ?
                   <></>
                   : <>
                     <Link href='/profile'>

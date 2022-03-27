@@ -35,7 +35,7 @@ const SignUp = () => {
           email,
           password,
         }, {
-        data: { username: username, avatar_url: avatar_url, website: website }
+        data: { username: username, avatar: avatar_url, website: website }
       })
       if (signUpError) setError(signUpError.message)
       else setMessage('Verifique seu e-mail para o link de confirmação')

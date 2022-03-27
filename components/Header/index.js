@@ -22,7 +22,7 @@ const Header = () => {
       <nav className="flex pr-5 content-center items-center place-content-center">
         {!user ?
           <MenuNotLogado /> :
-          <MenuLogado profile={user.user_metadata} />
+          <MenuLogado profile={session.user.user_metadata} />
         }
       </nav>
     </header>

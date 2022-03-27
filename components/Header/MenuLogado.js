@@ -25,7 +25,7 @@ const MenuLogado = ({ profile }) => (
           <div className='mx-4'>
             <Menu.Button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 hover:opacity-50 duration-300">
               <span className="sr-only">Abrir menu de usuário</span>
-              <Avatar url={profile.avatar_url} size={38} radius={9999} />
+              <Avatar url={profile.avatar} size={38} radius={9999} />
             </Menu.Button>
           </div>
           <Transition
