@@ -6,13 +6,14 @@
 
 ## Tecnologias e libs utilizadas
 
-As seguintes ferramentas foram usadas na construção do projeto:
-
-- [Next.Js](https://nextjs.org/)
-- [Supabase](https://supabase.com/)
-- [NProgress.js](https://ricostacruz.com/nprogress/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Headless UI](https://headlessui.dev/)
+- Frontend:
+  - [Next.js](https://github.com/vercel/next.js) - um framework React para produção.
+  - [NProgress.js](https://ricostacruz.com/nprogress/) - Uma barra de progresso nanoscópica.
+  - [Tailwind CSS](https://tailwindcss.com/) - Uma estrutura CSS de utilidade para o desenvolvimento rápido de interface do usuário.
+  - [Headless UI](https://headlessui.dev/) - Componentes de interface do usuário totalmente sem estilo e totalmente acessíveis.
+  - [Supabase.js](https://supabase.com/docs/library/getting-started) para gerenciamento de usuários e sincronização de dados em tempo real.
+- Backend:
+  - [app.supabase.io](https://app.supabase.io/): banco de dados Postgres hospedado com API restful para uso com Supabase.js.
 
 ## Como executar o projeto
 
