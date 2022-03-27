@@ -5,6 +5,7 @@ import { Profile } from '../lib/constants'
 import { useUser, RequireUpProfile } from '../lib/UserContext'
 import Link from 'next/link'
 import { AiOutlineLoading } from 'react-icons/ai';
+import Head from 'next/head'
 
 export default function Community() {
   const { user, session } = useUser()
@@ -41,6 +42,13 @@ export default function Community() {
   return (
     <div className="flex flex-col items-center p-3 max-w-[520px] m-auto mt-[100px] font-medium 
       transition ease-in-out">
+
+      <Head>
+        <title>
+          Comunidade
+        </title>
+      </Head>
+
       <div className='flex flex-row justify-between w-full mb-6 border-b border-blue-600/30 pb-2'>
         <h3 className='text-2xl self-center'>
           Perfis públicos
