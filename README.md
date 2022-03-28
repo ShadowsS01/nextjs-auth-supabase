@@ -77,7 +77,7 @@ npm run dev
 
 Depois de ter acesso às [variáveis de ambiente necessárias](#5-configurar-variáveis-de-ambiente), implante o exemplo usando o [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/ShadowsS01/nextjs-auth-supabase.git&project-name=nextjs-auth-supabase&repository-name=nextjs-auth-supabase&demo-title=NextJs%20Auth%20Supabase&demo-description=Um%20exemplo%20de%20aplicativo%20da%20Web%20usando%20Supabase%20e%20Next.js&demo-url=https://nextjs-auth-supabase.vercel.app/&demo-image=https://repository-images.githubusercontent.com/474755214/bc35a29f-3129-4680-9668-092bc41449cd&env=NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_SUPABASE_URL&envDescription=Necessário%20para%20conectar%20o%20aplicativo%20com%20o%20Supabase&envLink=https%3A%2F%2Fgithub.com%2FShadowsS01%2Fnextjs-auth-supabase#2-pegando-a-url-e-a-key)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FShadowsS01%2Fnextjs-auth-supabase&env=NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_SUPABASE_URL&envDescription=Necess%C3%A1rio%20para%20conectar%20o%20aplicativo%20com%20o%20Supabase&envLink=https%3A%2F%2Fgithub.com%2FShadowsS01%2Fnextjs-auth-supabase%232-pegando-a-url-e-a-key&project-name=nextjs-auth-supabase&repo-name=nextjs-auth-supabase&demo-title=NextJs%20Auth%20Supabase&demo-description=Um%20exemplo%20de%20aplicativo%20da%20Web%20usando%20Supabase%20e%20Next.js&demo-url=https%3A%2F%2Fnextjs-auth-supabase.vercel.app%2F&demo-image=https%3A%2F%2Frepository-images.githubusercontent.com%2F474755214%2Fbc35a29f-3129-4680-9668-092bc41449cd)
 
 ## Créditos
 
