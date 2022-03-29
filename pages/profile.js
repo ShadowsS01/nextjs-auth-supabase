@@ -75,7 +75,6 @@ export default function ProfileUser() {
                       </div>
 
                       <div className='flex flex-col mt-5 space-y-6 font-medium text-left'>
-
                         <div className='space-y-1'>
                           <label htmlFor="email">Email:</label>
                           <div className='opacity-75 dark:opacity-50'>
@@ -90,7 +89,6 @@ export default function ProfileUser() {
                               className='inputMail' disabled />
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>

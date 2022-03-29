@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
 import { ThemeProvider } from "next-themes";
 
 import '../styles/nprogress.css';

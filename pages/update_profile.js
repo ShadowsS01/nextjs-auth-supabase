@@ -197,7 +197,7 @@ function UpdateProfile() {
 
 
               <div className='flex flex-col mt-8 space-y-5'>
-                <div className='space-y-1'>
+                <div className='space-y-1 opacity-50'>
                   <label htmlFor="email">Email:</label>
                   <input className='inputMail' id="email" type="text" value={session.user.email} disabled />
                 </div>
@@ -208,7 +208,7 @@ function UpdateProfile() {
                     className='inputMail'
                     id="username"
                     type="text"
-                    value={username || ''}
+                    value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>

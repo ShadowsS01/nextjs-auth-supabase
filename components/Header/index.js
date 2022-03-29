@@ -10,8 +10,8 @@ const Header = () => {
 
   return <>
     <header className="flex items-center fixed top-0 left-0 w-full flex-row justify-between dark:shadow-2xl 
-      shadow-xl backdrop-blur header dark:bg-gray-900/50 dark:shadow-blue-900/30
-      pt-2 pb-2 duration-300 transition-opacity ease-in-out duration-300 selection:bg-blue-600/30 dark:selection:bg-blue-600/10">
+      shadow-xl backdrop-blur-sm dark:bg-gray-900/50 dark:shadow-blue-900/30 pt-2 pb-2 duration-300 
+      transition-opacity ease-in-out duration-300 selection:bg-blue-600/30 dark:selection:bg-blue-600/10">
       <div className="flex ml-5">
         <Link href="/" passHref>
           <Image src="https://github.com/ShadowsS01.png" alt="Home" width={48} height={48}

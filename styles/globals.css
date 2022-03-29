@@ -41,12 +41,6 @@ body::-webkit-scrollbar-thumb:hover {
   }
 }
 
-.header{
-  background-color: rgba( 255, 255, 255, 0.1);
-  backdrop-filter: blur( 5px );
-  -webkit-backdrop-filter: blur( 5px );
-}
-
 .authcontainer {
   max-width: 420px;
   margin: 96px auto;
