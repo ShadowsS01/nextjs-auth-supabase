@@ -185,7 +185,7 @@ function UpdateProfile() {
                 </label>
                 <div className='flex flex-row space-x-2'>
                   {avatar ? (
-                    <Avatar url={avatar} size={40} radius={8} />
+                    <Avatar url={avatar} avatarAlt={username} size={40} radius={8} />
                   ) : (
                     <FaRegUserCircle className='w-10 h-10' />
                   )}
