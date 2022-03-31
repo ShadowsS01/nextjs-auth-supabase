@@ -15,7 +15,7 @@ function AuthProvider() {
     const { error: signInError } = await supabase.auth.signIn({
       provider: 'github'
     }, {
-      redirectTo: 'http://localhost:3000/'
+      redirectTo: 'https://nextjs-auth-supabase.vercel.app/profile'
     })
     if (signInError) setError(signInError.message);
 
@@ -30,7 +30,7 @@ function AuthProvider() {
     const { error: signInError } = await supabase.auth.signIn({
       provider: 'google'
     }, {
-      redirectTo: 'http://localhost:3000/'
+      redirectTo: 'https://nextjs-auth-supabase.vercel.app/profile'
     });
     if (signInError) setError(signInError.message);
 
