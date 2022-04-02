@@ -25,9 +25,13 @@ const LinkMagic = () => {
       setError('Por favor, forneça um endereço de e-mail válido')
     } else {
       const { error } = await supabase.auth.signIn({ email })
-      if (error) setError(error.message)
-      else setMessage('Verifique seu e-mail para o link mágico')
-      setLoading(false)
+      if (error) {
+        setLoading(false)
+        setError(error.message)
+      } else {
+        setLoading(false)
+        setMessage('Verifique seu e-mail para o link mágico')
+      }
     }
     setLoading(false)
   }

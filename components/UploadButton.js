@@ -1,4 +1,5 @@
 import { AiOutlineLoading } from 'react-icons/ai';
+import { MdDone } from 'react-icons/md'
 
 export default function UploadButton(props) {
   return (
@@ -14,8 +15,11 @@ export default function UploadButton(props) {
           <div className='flex'>
             <AiOutlineLoading className='animate-spin self-center mr-1.5' />
             Enviando
-          </div> :
-          'Escolher imagem!'
+          </div>
+          : props.done ?
+            <MdDone className='w-5 h-5 text-green-600' />
+          :
+            'Escolher imagem!'
         }
       </label>
       <input
@@ -27,7 +31,7 @@ export default function UploadButton(props) {
         id="single"
         accept="image/*"
         onChange={props.onUpload}
-        disabled={props.loading}
+        disabled={props.loading || props.done}
       />
     </div>
   )

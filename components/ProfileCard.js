@@ -13,7 +13,7 @@ export default function ProfileCard({ profile }) {
         <p>{profile.username}</p>
         <p>
           <small>
-            Ultima atualização{' '}
+            Ultima atualização:{' '}
             {lastUpdated
               ? `${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`
               : 'Never'}

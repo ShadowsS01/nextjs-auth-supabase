@@ -37,10 +37,13 @@ const SignUp = () => {
         }, {
         data: { username: username, avatar: avatar_url, website: website }
       })
-      if (signUpError) setError(signUpError.message)
-      else setMessage('Verifique seu e-mail para o link de confirmação')
-
-      setLoading(false)
+      if (signUpError) {
+        setLoading(false)
+        setError(signUpError.message)
+      } else {
+        setLoading(false)
+        setMessage('Verifique seu e-mail para o link de confirmação')
+      }
     }
     setLoading(false)
   }
@@ -99,6 +102,7 @@ const SignUp = () => {
                   <div>
                     <input
                       className="inputMail"
+                      minLength={6}
                       type="password"
                       id="password"
                       value={password}

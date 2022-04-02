@@ -29,9 +29,12 @@ const Login = () => {
         email,
         password,
       })
-      if (signInError) setError('Credenciais de login inválidas')
-
-      setLoading(false)
+      if (signInError) {
+        setLoading(false)
+        setError('Credenciais de login inválidas')
+      } else {
+        setLoading(false)
+      }
     }
     setLoading(false)
   }

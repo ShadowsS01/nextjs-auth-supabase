@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { MdDone } from 'react-icons/md'
 import Avatar from '../components/Avatar';
 import UploadButton from '../components/UploadButton';
 import { DEFAULT_AVATARS_BUCKET, Profile } from '../lib/constants'
@@ -19,6 +20,8 @@ function UpdateProfile() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [doneUploading, setDoneUploading] = useState(false)
+  const [done, setDone] = useState(false)
   const [messageUpLoading, setMessageUpLoading] = useState('')
   const [message, setMessage] = useState('')
   const [avatar, setAvatar] = useState('')
@@ -70,13 +73,17 @@ function UpdateProfile() {
       if (updatePError) {
         setError(updatePError.message)
       } else {
+        setDoneUploading(true)
+        setTimeout(() => setDoneUploading(false), 3000)
         setMessageUpLoading('Avatar atualizado!')
+        setTimeout(() => setMessageUpLoading(''), 3000)
       }
 
       setAvatar(null)
       setAvatar(filePath)
     } catch (error) {
       alert(error.message)
+      setDoneUploading(false)
     } finally {
       setUploading(false)
     }
@@ -140,6 +147,9 @@ function UpdateProfile() {
           throw error
         } else {
           setMessage('Perfil atualizado!')
+          setDone(true)
+          setTimeout(() => setMessage(''), 3000)
+          setTimeout(() => setDone(false), 3000)
         }
       }
 
@@ -160,7 +170,7 @@ function UpdateProfile() {
             {!user.user_metadata.username || !user.user_metadata.avatar ?
               <title>Informações adicionais!</title>
               : <title>
-                Atualizar perfil!
+                Atualizar perfil
               </title>
             }
           </Head>
@@ -189,7 +199,7 @@ function UpdateProfile() {
                   ) : (
                     <FaRegUserCircle className='w-10 h-10' />
                   )}
-                  <UploadButton onUpload={uploadAvatar} loading={uploading} />
+                  <UploadButton onUpload={uploadAvatar} loading={uploading} done={doneUploading} />
                 </div>
               </div>
               <div className='mt-3 -mb-5 selection:bg-green-600/30'>
@@ -207,6 +217,8 @@ function UpdateProfile() {
                   <label htmlFor="username">Username:</label>
                   <input
                     className='inputMail'
+                    minLength={3}
+                    maxLength={16}
                     id="username"
                     type="text"
                     value={username}
@@ -216,16 +228,25 @@ function UpdateProfile() {
 
                 <div className='mb-4 text-center'>
                   {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
+                  {message && <div className='text-green-600 font-medium selection:bg-green-600/30'>{message}</div>}
                 </div>
                 <div>
-                  <button className="buttonLogin" onClick={() => updateProfile()} disabled={loading}>
+                  <button
+                    className="buttonLogin"
+                    onClick={() => updateProfile()} disabled={loading || done}
+                  >
                     {loading ?
                       <div className='flex justify-center'>
                         <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
                         Carregando
-                      </div> :
-                      'Atualizar'}
+                      </div>
+                      : done ?
+                        <div className='flex justify-center'>
+                          <MdDone className='w-7 h-7 text-green-600' />
+                        </div>
+                        :
+                        'Atualizar'
+                    }
                   </button>
                 </div>
               </div>

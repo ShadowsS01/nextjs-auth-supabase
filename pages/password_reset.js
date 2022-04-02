@@ -30,9 +30,12 @@ function PasswordReset() {
     }
     else {
       const { error } = await supabase.auth.api.resetPasswordForEmail(email)
-      if (error) setError(error.message)
-      else setMessage('Verifique seu e-mail para o link de redefinição de senha')
-      setLoading(false)
+      if (error) {
+        setError(error.message)
+      } else {
+        setLoading(false)
+        setMessage('Verifique seu e-mail para o link de redefinição de senha')
+      }
     }
     setLoading(false)
   }

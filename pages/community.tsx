@@ -40,7 +40,7 @@ export default function Community() {
     }
   }
   return (
-    <div className="flex flex-col items-center p-3 max-w-[520px] m-auto mt-[100px] font-medium 
+    <div className="flex flex-col items-center p-2 max-w-[520px] m-auto mt-[100px] font-medium 
       transition ease-in-out">
 
       <Head>

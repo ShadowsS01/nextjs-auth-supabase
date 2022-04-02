@@ -118,6 +118,7 @@ function UpdatePassword() {
                   <div>
                     <input
                       className="inputMail"
+                      minLength={6}
                       type="senha"
                       id="senha"
                       value={password}
