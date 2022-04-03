@@ -251,7 +251,10 @@ function UpdateProfile() {
                         </div>
                       </button>
                       :
-                      <button className='buttonLogin'>
+                      <button
+                        className='buttonLogin'
+                        onClick={() => updateProfile()} disabled={loading || done}
+                      >
                         Atualizar
                       </button>
                   }
