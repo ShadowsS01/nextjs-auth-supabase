@@ -281,15 +281,36 @@ function UpdateProfile() {
                 </div>
               </div>
 
-              <div className='mt-6 flex text-sm sm:text-base font-medium sm:font-normal 
-                  text-blue-600 selection:bg-blue-200 dark:selection:bg-blue-900/50 
-                  dark:selection:text-blue-500'>
+              <div className='mt-6 flex justify-between text-sm sm:text-base sm:font-normal 
+                  '>
                 {!user.user_metadata.username | !user.user_metadata.avatar ?
-                  <></>
+                  <>
+                    <Link href=''>
+                      <a
+                        className="text-red-600 font-medium hover:underline selection:bg-red-200 
+                          dark:selection:bg-red-900/50 dark:selection:text-red-500"
+                        onClick={() => signOut()}
+                      >
+                        Desconectar
+                      </a>
+                    </Link>
+                  </>
                   : <>
                     <Link href='/profile'>
-                      <a className="hover:underline">
+                      <a
+                        className="self-center font-medium hover:underline text-blue-600 selection:bg-blue-200 
+                          dark:selection:bg-blue-900/50 dark:selection:text-blue-500"
+                      >
                         Voltar para perfil
+                      </a>
+                    </Link>
+                    <Link href=''>
+                      <a
+                        className="self-center font-medium text-red-600 hover:underline selection:bg-red-200 
+                          dark:selection:bg-red-900/50 dark:selection:text-red-500"
+                        onClick={() => signOut()}
+                      >
+                        Desconectar
                       </a>
                     </Link>
                   </>
