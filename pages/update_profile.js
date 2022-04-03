@@ -145,11 +145,9 @@ function UpdateProfile() {
             setError(updateError.message)
           } else {
             setMessage('Perfil atualizado!')
-            setIsOpen(true)
             setDone(true)
             setTimeout(() => setMessage(''), 3000)
             setTimeout(() => setDone(false), 3000)
-            setTimeout(() => setIsOpen(false), 2000)
           }
         }
       }
