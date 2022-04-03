@@ -27,7 +27,7 @@ function UpdateProfile() {
   const [message, setMessage] = useState('');
   const [avatar, setAvatar] = useState('');
   const [username, setUsername] = useState('');
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     getProfile()
@@ -152,7 +152,7 @@ function UpdateProfile() {
             setDone(true)
             setTimeout(() => setMessage(''), 3000)
             setTimeout(() => setDone(false), 3000)
-            setTimeout(() => setIsOpen(false), 3000)
+            setTimeout(() => setIsOpen(false), 2000)
           }
         }
       }
