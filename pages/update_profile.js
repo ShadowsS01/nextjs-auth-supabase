@@ -231,23 +231,30 @@ function UpdateProfile() {
                   {message && <div className='text-green-600 font-medium selection:bg-green-600/30'>{message}</div>}
                 </div>
                 <div>
-                  <button
-                    className="buttonLogin"
-                    onClick={() => updateProfile()} disabled={loading || done}
-                  >
-                    {loading ?
-                      <div className='flex justify-center'>
-                        <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                        Carregando
-                      </div>
-                      : done ?
+                  {done ?
+                    <button
+                      className='w-full flex justify-center py-3 px-6 focus:outline-none rounded-md bg-green-300/60 
+                      hover:bg-green-300/90 dark:bg-green-900/40 dark:hover:bg-green-900/60 transition 
+                      ease-in-out duration-500 cursor-default'
+                    >
+                      <MdDone className='w-7 h-7 text-green-600' />
+                    </button>
+                    : loading ?
+                      <button
+                        className='w-full flex justify-center py-3 px-6 text-lg font-semibold text-white 
+                        focus:outline-none rounded-md bg-blue-400 hover:bg-blue-500 dark:bg-blue-900/40 
+                        dark:hover:bg-blue-900/60 transition ease-in-out duration-500 cursor-progress'
+                      >
                         <div className='flex justify-center'>
-                          <MdDone className='w-7 h-7 text-green-600' />
+                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
+                          Carregando
                         </div>
-                        :
-                        'Atualizar'
-                    }
-                  </button>
+                      </button>
+                      :
+                      <button className='buttonLogin'>
+                        Atualizar
+                      </button>
+                  }
                 </div>
               </div>
 
