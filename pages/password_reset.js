@@ -18,6 +18,7 @@ function PasswordReset() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
 
   const handlePasswordReset = async (e) => {
     e.preventDefault()
@@ -34,6 +35,7 @@ function PasswordReset() {
         setError(error.message)
       } else {
         setLoading(false)
+        setDone(true)
         setMessage('Verifique seu e-mail para o link de redefinição de senha')
       }
     }
@@ -58,87 +60,71 @@ function PasswordReset() {
             </h3>
           </div>
 
-          <div className="flex flex-col">
-            {user ? <></> : <AuthProvider />}
+          {user ? <></> : <AuthProvider />}
 
-            <form className="flex flex-col mt-10" onSubmit={handlePasswordReset}>
+          <form className="flex flex-col mt-10" onSubmit={handlePasswordReset}>
 
-              <div>
-                <div className='space-y-2'>
-                  <label htmlFor="email" className="font-medium after:content-['*'] after:ml-1 after:text-red-500">
-                    Email:
-                  </label>
-                  <div>
-                    <input
-                      className="inputMail peer invalid:border-red-600/60 invalid:hover:border-red-700
+            <div>
+              <div className='space-y-2'>
+                <label htmlFor="email" className="font-medium after:content-['*'] after:ml-1 after:text-red-500">
+                  Email:
+                </label>
+                <div>
+                  <input
+                    className="inputMail peer invalid:border-red-600/60 invalid:hover:border-red-700
                         invalid:focus:ring-red-700/50 invalid:focus:border-red-700 invalid:focus:caret-red-700
                         invalid:selection:bg-pink-700/20 invalid:dark:selection:bg-pink-600/10"
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <div className="hidden peer-invalid:inline text-red-600 font-medium
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <div className="hidden peer-invalid:inline text-red-600 font-medium
                       selection:bg-pink-700/20 dark:selection:bg-pink-600/10">
-                      <p className='mt-2 text-sm'>
-                        Por favor, forneça um endereço de e-mail válido.
-                      </p>
-                    </div>
+                    <p className='mt-2 text-sm'>
+                      Por favor, forneça um endereço de e-mail válido.
+                    </p>
                   </div>
                 </div>
+              </div>
+            </div>
 
+            <div className='mt-2'>
+              <div className='my-4 text-center'>
+                {error && <div className='font-medium text-red-600'>{error}</div>}
+                {message && <div className='text-green-600 font-medium'>{message}</div>}
               </div>
 
               <div className='mt-2'>
-                <div className='my-4 text-center'>
-                  {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
-                </div>
-
-                <div className='mt-2'>
-                  {!loading ?
-                    <>
-                      <button
-                        className="buttonLogin text-sm sm:text-base"
-                        type="submit"
-                      >
-                        enviar e-mail de redefinição de senha
-                      </button>
-                    </>
-                    :
-                    <>
-                      <button className='buttonLogin cursor-not-allowed disabled:opacity-50' disabled>
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                    </>
-                  }
-                </div>
+                <AuthProvider.ButtonSubmit
+                  onSubmit={handlePasswordReset} loading={loading} done={done}
+                  title={'enviar e-mail de redefinição de senha'} 
+                  classNameDone={'w-5 h-5 sm:w-6 sm:h-6 text-green-600'}
+                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'} 
+                  classNameP={'text-sm sm:text-base'} className={'buttonLogin text-sm sm:text-base'} />
               </div>
+            </div>
 
-              <div className='mt-6 flex text-sm sm:text-base font-medium sm:font-normal 
+            <div className='mt-6 flex text-sm sm:text-base font-medium sm:font-normal 
                   text-blue-600 selection:bg-blue-200 dark:selection:bg-blue-900/50 
                   dark:selection:text-blue-500'>
-                {!user ?
-                  <><Link href='/login'>
+              {!user ?
+                <><Link href='/login'>
+                  <a className="hover:underline">
+                    Voltar para fazer login
+                  </a>
+                </Link>
+                </>
+                : <>
+                  <Link href='/profile'>
                     <a className="hover:underline">
-                      Voltar para fazer login
+                      Voltar para perfil
                     </a>
                   </Link>
-                  </>
-                  : <>
-                    <Link href='/profile'>
-                      <a className="hover:underline">
-                        Voltar para perfil
-                      </a>
-                    </Link>
-                  </>
-                }
-              </div>
-            </form>
-          </div>
+                </>
+              }
+            </div>
+          </form>
         </div>
       </div>
     </>

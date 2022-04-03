@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
 import { AiOutlineLoading, AiFillGithub, AiOutlineGoogle } from 'react-icons/ai';
+import { MdDone } from 'react-icons/md'
 import { supabase } from '../lib/supabaseClient';
 
 function AuthProvider() {
@@ -67,14 +68,56 @@ function AuthProvider() {
   )
 }
 
+function ButtonSubmit(props) {
+  return (
+    <div>
+      {props.done ?
+        <button
+          className='w-full flex justify-center py-3 px-6 focus:outline-none rounded-md bg-green-300/60 
+                      hover:bg-green-300/90 dark:bg-green-900/40 dark:hover:bg-green-900/60 transition 
+                      ease-in-out duration-500 cursor-default'
+        >
+          <MdDone className={props.classNameDone} />
+        </button>
+        : props.loading ?
+          <button
+            className='w-full flex justify-center py-3 px-6 text-white font-semibold
+                        focus:outline-none rounded-md bg-blue-400 hover:bg-blue-500 dark:bg-blue-900/40 
+                        dark:hover:bg-blue-900/60 transition ease-in-out duration-500 cursor-progress'
+          >
+            <div className='flex justify-center items-center'>
+              <AiOutlineLoading className={props.classNameLoading} />
+              <p
+                className={props.classNameP}
+              >
+                Carregando
+              </p>
+            </div>
+          </button>
+          :
+          <div>
+            <button
+              className={props.className}
+              type='submit'
+              onClick={props.onSubmit}
+              disabled={props.loading || props.done}
+            >
+              {props.title}
+            </button>
+          </div>
+      }
+    </div>
+  )
+}
+
 function UpdatePassword() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false)
 
-  const handlePasswordReset = async (e) => {
-    e.preventDefault();
+  const handlePasswordReset = async () => {
     setError('');
     setMessage('');
     setLoading(true);
@@ -84,8 +127,12 @@ function UpdatePassword() {
     }
     else {
       const { error } = await supabase.auth.update({ password })
-      if (error) setError(error.message)
-      else setMessage('Sua senha foi atualizada')
+      if (error) {
+        setError(error.message)
+      } else {
+        setMessage('Sua senha foi atualizada')
+        setDone(true)
+      }
       setLoading(false)
     }
     setLoading(false)
@@ -108,53 +155,36 @@ function UpdatePassword() {
               Redefinir Senha
             </h3>
           </div>
-          <div className="flex flex-col">
-            <form className="flex flex-col mt-6" onSubmit={handlePasswordReset}>
-              <div>
-                <div className='space-y-2'>
-                  <label htmlFor="senha" className='font-medium'>
-                    Nova senha:
-                  </label>
-                  <div>
-                    <input
-                      className="inputMail"
-                      minLength={6}
-                      type="senha"
-                      id="senha"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
+          <div className="flex flex-col mt-6">
+            <div>
+              <div className='space-y-2'>
+                <label htmlFor="senha" className='font-medium'>
+                  Nova senha:
+                </label>
+                <div>
+                  <input
+                    className="inputMail"
+                    minLength={6}
+                    type="password"
+                    id="senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='my-2 mb-4 text-center'>
+                {error && <div className='font-medium text-red-600'>{error}</div>}
+                {message && <div className='text-green-600 font-medium'>{message}</div>}
               </div>
               <div className='mt-2'>
-                <div className='my-2 mb-4 text-center'>
-                  {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
-                </div>
-                <div className='mt-2'>
-                  {!loading ?
-                    <>
-                      <button
-                        className="buttonLogin text-sm sm:text-base"
-                        type="submit"
-                      >
-                        Atualizar Senha!
-                      </button>
-                    </>
-                    :
-                    <>
-                      <button className='buttonLogin cursor-not-allowed disabled:opacity-50' disabled>
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                    </>
-                  }
-                </div>
+                <ButtonSubmit onSubmit={handlePasswordReset} loading={loading} done={done}
+                  title={'Atualizar Senha!'} classNameDone={'w-5 h-5 sm:w-6 sm:h-6 text-green-600'}
+                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'} 
+                  classNameP={'text-sm sm:text-base'} className={'buttonLogin text-sm sm:text-base'} />
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -162,5 +192,6 @@ function UpdatePassword() {
   )
 }
 
+AuthProvider.ButtonSubmit = ButtonSubmit;
 AuthProvider.UpdatePassword = UpdatePassword;
 export default AuthProvider;

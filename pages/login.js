@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { AiOutlineLoading } from 'react-icons/ai';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { AuthRedirect } from '../lib/UserContext';
 import AuthProvider from '../components/AuthProvider';
@@ -14,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false)
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -30,9 +30,11 @@ const Login = () => {
         password,
       })
       if (signInError) {
+        setDone(false)
         setLoading(false)
         setError('Credenciais de login inválidas')
       } else {
+        setDone(true)
         setLoading(false)
       }
     }
@@ -119,25 +121,10 @@ const Login = () => {
                 </div>
 
                 <div className='mt-6'>
-                  {!loading ?
-                    <>
-                      <button
-                        className="buttonLogin"
-                        type="submit"
-                      >
-                        Entrar com e-mail
-                      </button>
-                    </>
-                    :
-                    <>
-                      <button className='buttonLogin cursor-not-allowed disabled:opacity-50' disabled>
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                    </>
-                  }
+                  <AuthProvider.ButtonSubmit
+                    onSubmit={handleSignIn} loading={loading} done={done} title={'Entrar com e-mail'}
+                    classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
+                    classNameP={''} className={'buttonLogin'} />
                 </div>
               </div>
 

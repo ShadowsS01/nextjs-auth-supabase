@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import React, { useState } from 'react';
-import { AiOutlineLoading } from 'react-icons/ai'
-
 import AuthProvider from '../components/AuthProvider';
 import { AuthRedirect } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
@@ -14,6 +12,7 @@ const LinkMagic = () => {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
 
   const handleMagicLinkSignIn = async (e) => {
     e.preventDefault()
@@ -27,8 +26,10 @@ const LinkMagic = () => {
       const { error } = await supabase.auth.signIn({ email })
       if (error) {
         setLoading(false)
+        setDone(false)
         setError(error.message)
       } else {
+        setDone(true)
         setLoading(false)
         setMessage('Verifique seu e-mail para o link mágico')
       }
@@ -91,29 +92,16 @@ const LinkMagic = () => {
                   {message && <div className='text-green-600 font-medium'>{message}</div>}
                 </div>
                 <div className='mt-2'>
-                  {!loading ?
-                    <>
-                      <button
-                        className="buttonLogin text-sm sm:text-base"
-                        type="submit"
-                      >
-                        Enviar link mágico
-                      </button>
-                    </>
-                    :
-                    <>
-                      <button className='buttonLogin cursor-not-allowed disabled:opacity-50' disabled>
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                    </>
-                  }
+                  <AuthProvider.ButtonSubmit
+                    onSubmit={handleMagicLinkSignIn} loading={loading} done={done}
+                    title={'Enviar link mágico'}
+                    classNameDone={'w-5 h-5 sm:w-6 sm:h-6 text-green-600'}
+                    classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'}
+                    classNameP={'text-sm sm:text-base'} className={'buttonLogin text-sm sm:text-base'} />
                 </div>
               </div>
 
-              <div className='mt-4 flex flex-col space-y-2 text-sm sm:text-base font-medium sm:font-normal 
+              <div className='mt-6 flex flex-col space-y-2 text-sm sm:text-base font-medium sm:font-normal 
                     text-blue-600 selection:bg-blue-200 dark:selection:bg-blue-900/50 
                     dark:selection:text-blue-500'>
                 <Link href='/login'>

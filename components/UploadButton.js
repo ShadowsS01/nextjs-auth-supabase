@@ -1,7 +1,7 @@
 import { AiOutlineLoading } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md'
 
-export default function UploadButton(props) {
+function UploadButton(props) {
   return (
     <div className="flex flex-wrap text-sm sm:text-base font-medium sm:font-normal">
       {props.done ? (
@@ -33,7 +33,7 @@ export default function UploadButton(props) {
       ) : (
         <>
           <label
-            className='flex justify-center items-center px-3 sm:px-5 py-2 rounded-lg font-medium text-black 
+            className='flex justify-center text-center items-center px-3 sm:px-5 py-2 rounded-lg font-medium text-black 
               border border-blue-900/30 hover:border-blue-900 bg-blue-300/50 hover:bg-blue-300 
               dark:border-transparent dark:text-white/75 dark:hover:text-white dark:hover:border-blue-600/50 
               dark:bg-black/50 dark:hover:bg-black selection:bg-blue-700/20 dark:selection:bg-blue-600/10 
@@ -58,3 +58,5 @@ export default function UploadButton(props) {
     </div>
   )
 }
+
+export default UploadButton;

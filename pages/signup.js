@@ -18,6 +18,7 @@ const SignUp = () => {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
 
   const handleSignUp = async (e) => {
     e.preventDefault()
@@ -42,6 +43,7 @@ const SignUp = () => {
         setError(signUpError.message)
       } else {
         setLoading(false)
+        setDone(true)
         setMessage('Verifique seu e-mail para o link de confirmação')
       }
     }
@@ -120,25 +122,10 @@ const SignUp = () => {
                 </div>
 
                 <div className='mt-6'>
-                  {!loading ?
-                    <>
-                      <button
-                        className="buttonLogin"
-                        type="submit"
-                      >
-                        Criar conta
-                      </button>
-                    </>
-                    :
-                    <>
-                      <button className='buttonLogin cursor-not-allowed disabled:opacity-50' disabled>
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                    </>
-                  }
+                  <AuthProvider.ButtonSubmit 
+                    onSubmit={handleSignUp} loading={loading} done={done} title={'Criar conta'} 
+                    classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
+                    classNameP={''} className={'buttonLogin'} />
                 </div>
               </div>
 

@@ -1,31 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head';
 import Link from 'next/link';
-import { AiOutlineLoading } from 'react-icons/ai';
 import { FaRegUserCircle } from 'react-icons/fa';
-import { MdDone } from 'react-icons/md'
 import Avatar from '../components/Avatar';
 import UploadButton from '../components/UploadButton';
-import { DEFAULT_AVATARS_BUCKET, Profile } from '../lib/constants'
+import AuthProvider from '../components/AuthProvider';
 
-import { useState, useEffect, ChangeEvent } from 'react'
+import { DEFAULT_AVATARS_BUCKET } from '../lib/constants'
+import { useState, useEffect, Fragment } from 'react'
 import { useUser, RequireAuth } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
+
+import { Dialog, Transition } from '@headlessui/react'
 
 function UpdateProfile() {
   RequireAuth();
 
   const { user, session } = useUser();
 
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [uploading, setUploading] = useState(false)
-  const [doneUploading, setDoneUploading] = useState(false)
-  const [done, setDone] = useState(false)
-  const [messageUpLoading, setMessageUpLoading] = useState('')
-  const [message, setMessage] = useState('')
-  const [avatar, setAvatar] = useState('')
-  const [username, setUsername] = useState('')
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [doneUploading, setDoneUploading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [messageUpLoading, setMessageUpLoading] = useState('');
+  const [message, setMessage] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [username, setUsername] = useState('');
+  let [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     getProfile()
@@ -132,29 +134,33 @@ function UpdateProfile() {
       if (!username || username?.length < 3 || username?.length > 16) {
         setError('Digite um Username de 3 à 16 digitos')
       } else {
-        const { error: updateError } = await supabase.auth.update({
-          data: { username: username }
-        })
-        if (updateError) {
-          setError(updateError.message)
-        }
 
         let { error } = await supabase.from('profiles').upsert(updates, {
           returning: 'minimal', // Don't return the value after inserting
         })
-
         if (error) {
           throw error
         } else {
-          setMessage('Perfil atualizado!')
-          setDone(true)
-          setTimeout(() => setMessage(''), 3000)
-          setTimeout(() => setDone(false), 3000)
+          const { error: updateError } = await supabase.auth.update({
+            data: { username: username }
+          })
+          if (updateError) {
+            setError(updateError.message)
+          } else {
+            setMessage('Perfil atualizado!')
+            setIsOpen(true)
+            setDone(true)
+            setTimeout(() => setMessage(''), 3000)
+            setTimeout(() => setDone(false), 3000)
+            setTimeout(() => setIsOpen(false), 3000)
+          }
         }
       }
 
     } catch (error) {
       setError(error.message)
+      setLoading(false)
+      setDone(false)
     } finally {
       setLoading(false)
     }
@@ -174,7 +180,46 @@ function UpdateProfile() {
               </title>
             }
           </Head>
+          <Transition
+            show={isOpen}
+            as={Fragment}
+            enter="transition ease-out duration-300"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-150"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Dialog
+              open={isOpen}
+              onClose={() => setIsOpen(false)}
+              className="fixed z-10 inset-0 overflow-y text-center font-medium"
+            >
+              <div className='flex flex-col mt-4 min-h-screen'>
+                <Dialog.Overlay className="fixed inset-0 bg-black opacity-20 dark:opacity-30" />
 
+                <div className='relative backdrop-blur bg-blue-600/30 dark:bg-black/40 rounded-md 
+                                max-w-sm mx-auto'>
+                  <div className='mx-4 my-2 space-y-2'>
+                    <Dialog.Title className='text-green-600 selection:bg-green-500/30'>
+                      Atualizado!
+                    </Dialog.Title>
+                    <p className='selection:bg-blue-200 dark:selection:bg-blue-900/50 
+                  dark:selection:text-blue-500'>
+                      Seu perfil foi atualizado com êxito!
+                    </p>
+
+                    <button
+                      className='text-green-600 hover:underline selection:bg-green-600/30'
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Ok
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Dialog>
+          </Transition>
           <div className="max-w-lg w-full max-w-md">
             <div>
               <h3 className='text-2xl font-semibold'
@@ -205,8 +250,6 @@ function UpdateProfile() {
               <div className='mt-3 -mb-5 selection:bg-green-600/30'>
                 {messageUpLoading && <div className='text-green-600 font-medium'>{messageUpLoading}</div>}
               </div>
-
-
               <div className='flex flex-col mt-8 space-y-5'>
                 <div className='space-y-1 opacity-50'>
                   <label htmlFor="email">Email:</label>
@@ -231,33 +274,10 @@ function UpdateProfile() {
                   {message && <div className='text-green-600 font-medium selection:bg-green-600/30'>{message}</div>}
                 </div>
                 <div>
-                  {done ?
-                    <button
-                      className='w-full flex justify-center py-3 px-6 focus:outline-none rounded-md bg-green-300/60 
-                      hover:bg-green-300/90 dark:bg-green-900/40 dark:hover:bg-green-900/60 transition 
-                      ease-in-out duration-500 cursor-default'
-                    >
-                      <MdDone className='w-7 h-7 text-green-600' />
-                    </button>
-                    : loading ?
-                      <button
-                        className='w-full flex justify-center py-3 px-6 text-lg font-semibold text-white 
-                        focus:outline-none rounded-md bg-blue-400 hover:bg-blue-500 dark:bg-blue-900/40 
-                        dark:hover:bg-blue-900/60 transition ease-in-out duration-500 cursor-progress'
-                      >
-                        <div className='flex justify-center'>
-                          <AiOutlineLoading className='animate-spin h-7 w-7 mr-2' />
-                          Carregando
-                        </div>
-                      </button>
-                      :
-                      <button
-                        className='buttonLogin'
-                        onClick={() => updateProfile()} disabled={loading || done}
-                      >
-                        Atualizar
-                      </button>
-                  }
+                  <AuthProvider.ButtonSubmit
+                    onSubmit={updateProfile} loading={loading} done={done} title={'Atualizar'}
+                    classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
+                    classNameP={''} className={'buttonLogin'} />
                 </div>
               </div>
 
