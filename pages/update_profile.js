@@ -7,11 +7,9 @@ import UploadButton from '../components/UploadButton';
 import AuthProvider from '../components/AuthProvider';
 
 import { DEFAULT_AVATARS_BUCKET } from '../lib/constants'
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser, RequireAuth } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
-
-import { Dialog, Transition } from '@headlessui/react'
 
 function UpdateProfile() {
   RequireAuth();
@@ -27,7 +25,6 @@ function UpdateProfile() {
   const [message, setMessage] = useState('');
   const [avatar, setAvatar] = useState('');
   const [username, setUsername] = useState('');
-  let [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     getProfile()
@@ -180,46 +177,6 @@ function UpdateProfile() {
               </title>
             }
           </Head>
-          <Transition
-            show={isOpen}
-            as={Fragment}
-            enter="transition ease-out duration-300"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-150"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Dialog
-              open={isOpen}
-              onClose={() => setIsOpen(false)}
-              className="fixed z-10 inset-0 overflow-y text-center font-medium"
-            >
-              <div className='flex flex-col mt-4 min-h-screen'>
-                <Dialog.Overlay className="fixed inset-0 bg-black opacity-20 dark:opacity-30" />
-
-                <div className='relative backdrop-blur bg-blue-600/30 dark:bg-black/40 rounded-md 
-                                max-w-sm mx-auto'>
-                  <div className='mx-4 my-2 space-y-2'>
-                    <Dialog.Title className='text-green-600 selection:bg-green-500/30'>
-                      Atualizado!
-                    </Dialog.Title>
-                    <p className='selection:bg-blue-200 dark:selection:bg-blue-900/50 
-                  dark:selection:text-blue-500'>
-                      Seu perfil foi atualizado com êxito!
-                    </p>
-
-                    <button
-                      className='text-green-600 hover:underline selection:bg-green-600/30'
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Ok
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Dialog>
-          </Transition>
           <div className="max-w-lg w-full max-w-md">
             <div>
               <h3 className='text-2xl font-semibold'
