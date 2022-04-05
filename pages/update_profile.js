@@ -128,10 +128,9 @@ function UpdateProfile() {
         updated_at: new Date(),
       }
 
-      if (!username || username?.length < 3 || username?.length > 16) {
+      if (!username || username?.length < 3 || username?.length > 16 || username.includes(' ')) {
         setError('Digite um Username de 3 à 16 digitos')
       } else {
-
         let { error } = await supabase.from('profiles').upsert(updates, {
           returning: 'minimal', // Don't return the value after inserting
         })
@@ -153,7 +152,11 @@ function UpdateProfile() {
       }
 
     } catch (error) {
-      setError(error.message)
+      if (error != 'duplicate key value violates unique constraint "profiles_username_key"') {
+        setError('Username já existe!')
+      } else {
+        setError(error.message)
+      }
       setLoading(false)
       setDone(false)
     } finally {
@@ -236,8 +239,7 @@ function UpdateProfile() {
                 </div>
               </div>
 
-              <div className='mt-6 flex justify-between text-sm sm:text-base sm:font-normal 
-                  '>
+              <div className='mt-6 flex justify-between text-sm sm:text-base sm:font-normal'>
                 {!user.user_metadata.username | !user.user_metadata.avatar ?
                   <>
                     <Link href=''>

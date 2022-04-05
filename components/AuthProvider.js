@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { AiOutlineLoading, AiFillGithub, AiOutlineGoogle } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md'
 import { supabase } from '../lib/supabaseClient';
+import ReadPassword from './ReadPassword';
 
 function AuthProvider() {
   const [error, setError] = useState('');
@@ -116,13 +117,14 @@ function UpdatePassword() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false)
+  const [read, setRead] = useState('password');
 
   const handlePasswordReset = async () => {
     setError('');
     setMessage('');
     setLoading(true);
 
-    if (password.length < 6) {
+    if (password.length < 6 || password.includes(' ')) {
       setError('A senha deve ter pelo menos 6 caracteres')
     }
     else {
@@ -158,14 +160,17 @@ function UpdatePassword() {
           <div className="flex flex-col mt-6">
             <div>
               <div className='space-y-2'>
-                <label htmlFor="senha" className='font-medium'>
-                  Nova senha:
-                </label>
+                <div className='flex justify-between self-center items-center'>
+                  <label htmlFor="senha" className='font-medium'>
+                    Nova senha:
+                  </label>
+                  <ReadPassword password={password} setRead={setRead} read={read} />
+                </div>
                 <div>
                   <input
                     className="inputMail"
                     minLength={6}
-                    type="password"
+                    type={read}
                     id="senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -181,7 +186,7 @@ function UpdatePassword() {
               <div className='mt-2'>
                 <ButtonSubmit onSubmit={handlePasswordReset} loading={loading} done={done}
                   title={'Atualizar Senha!'} classNameDone={'w-5 h-5 sm:w-6 sm:h-6 text-green-600'}
-                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'} 
+                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'}
                   classNameP={'text-sm sm:text-base'} className={'buttonLogin text-sm sm:text-base'} />
               </div>
             </div>

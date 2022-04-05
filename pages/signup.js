@@ -1,34 +1,35 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { AiOutlineLoading } from 'react-icons/ai';
 import AuthProvider from '../components/AuthProvider';
+import ReadPassword from '../components/ReadPassword';
 
 import { AuthRedirect } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
 
 const SignUp = () => {
-  AuthRedirect()
+  AuthRedirect();
 
-  const [username, setUsername] = useState('')
-  const [avatar_url, setAvatar_url] = useState('')
-  const [website, setWebsite] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
+  const [username, setUsername] = useState('');
+  const [avatar_url, setAvatar_url] = useState('');
+  const [website, setWebsite] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [read, setRead] = useState('password');
 
   const handleSignUp = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMessage('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setMessage('');
+    setLoading(true);
 
-    if (!email.includes('@')) {
+    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
       setError('Por favor, forneça um endereço de e-mail válido')
-    } else if (password.length < 6) {
+    } else if (password.length < 6 || password.includes(' ')) {
       setError('A senha deve ter pelo menos 6 caracteres')
     } else {
       const { error: signUpError } = await supabase.auth.signUp(
@@ -73,8 +74,8 @@ const SignUp = () => {
 
             <form className="flex flex-col mt-10" onSubmit={(e) => handleSignUp(e)}>
 
-              <div className='space-y-5'>
-                <div className='space-y-1'>
+              <div>
+                <div className='space-y-2'>
                   <label htmlFor="email" className='font-medium'>
                     Email:
                   </label>
@@ -97,15 +98,18 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className='mt-6 space-y-1'>
-                  <label htmlFor="password" className='font-medium'>
-                    Senha:
-                  </label>
+                <div className='mt-6 space-y-2'>
+                  <div className='flex justify-between self-center items-center'>
+                    <label htmlFor="password" className='font-medium'>
+                      Senha:
+                    </label>
+                    <ReadPassword password={password} setRead={setRead} read={read} />
+                  </div>
                   <div>
                     <input
                       className="inputMail"
                       minLength={6}
-                      type="password"
+                      type={read}
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -122,8 +126,8 @@ const SignUp = () => {
                 </div>
 
                 <div className='mt-6'>
-                  <AuthProvider.ButtonSubmit 
-                    onSubmit={handleSignUp} loading={loading} done={done} title={'Criar conta'} 
+                  <AuthProvider.ButtonSubmit
+                    onSubmit={handleSignUp} loading={loading} done={done} title={'Criar conta'}
                     classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
                     classNameP={''} className={'buttonLogin'} />
                 </div>

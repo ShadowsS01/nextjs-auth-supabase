@@ -4,25 +4,26 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { AuthRedirect } from '../lib/UserContext';
 import AuthProvider from '../components/AuthProvider';
+import ReadPassword from '../components/ReadPassword';
 
 const Login = () => {
   AuthRedirect();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
+  const [read, setRead] = useState('password');
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (!email.includes('@')) {
+    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
       setError('Por favor, forneça um endereço de e-mail válido')
-    } else if (password.length < 6) {
+    } else if (password.length < 6 || password.includes(' ')) {
       setError('A senha deve ter pelo menos 6 caracteres')
     } else {
       const { error: signInError } = await supabase.auth.signIn({
@@ -89,13 +90,17 @@ const Login = () => {
                 </div>
 
                 <div className='mt-6 space-y-2'>
-                  <label htmlFor="password" className='font-medium'>
-                    Senha:
-                  </label>
+                  <div className='flex justify-between self-center items-center'>
+                    <label htmlFor="password" className='font-medium'>
+                      Senha:
+                    </label>
+                    <ReadPassword password={password} setRead={setRead} read={read} />
+                  </div>
                   <div>
                     <input
                       className="inputMail"
-                      type="password"
+                      minLength={6}
+                      type={read}
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -117,7 +122,6 @@ const Login = () => {
 
                 <div className='mt-3 text-center'>
                   {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
                 </div>
 
                 <div className='mt-6'>

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Head from 'next/head';
 import React, { useState } from 'react';
-import { AiOutlineLoading } from 'react-icons/ai'
 
 import { useUser, RequireUpProfile } from '../lib/UserContext';
 import AuthProvider from '../components/AuthProvider';
@@ -26,13 +25,18 @@ function PasswordReset() {
     setMessage('')
     setLoading(true)
 
-    if (!email.includes('@')) {
+    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
       setError('Por favor, forneça um endereço de e-mail válido.')
+      setDone(false)
     }
     else {
       const { error } = await supabase.auth.api.resetPasswordForEmail(email)
       if (error) {
-        setError(error.message)
+        if (error != 'Unable to validate email address: invalid format') {
+          setError('Por favor, forneça um endereço de e-mail válido.')
+        } else {
+          setError(error.message)
+        }
       } else {
         setLoading(false)
         setDone(true)
@@ -98,9 +102,9 @@ function PasswordReset() {
               <div className='mt-2'>
                 <AuthProvider.ButtonSubmit
                   onSubmit={handlePasswordReset} loading={loading} done={done}
-                  title={'enviar e-mail de redefinição de senha'} 
+                  title={'enviar e-mail de redefinição de senha'}
                   classNameDone={'w-5 h-5 sm:w-6 sm:h-6 text-green-600'}
-                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'} 
+                  classNameLoading={'animate-spin w-5 h-5 sm:w-6 sm:h-6 mr-2 self-center'}
                   classNameP={'text-sm sm:text-base'} className={'buttonLogin text-sm sm:text-base'} />
               </div>
             </div>

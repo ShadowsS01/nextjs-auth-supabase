@@ -20,14 +20,18 @@ const LinkMagic = () => {
     setMessage('')
     setLoading(true)
 
-    if (!email.includes('@')) {
+    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
       setError('Por favor, forneça um endereço de e-mail válido')
     } else {
       const { error } = await supabase.auth.signIn({ email })
       if (error) {
+        if (error != 'Unable to validate email address: invalid format') {
+          setError('Por favor, forneça um endereço de e-mail válido.')
+        } else {
+          setError(error.message)
+        }
         setLoading(false)
         setDone(false)
-        setError(error.message)
       } else {
         setDone(true)
         setLoading(false)
