@@ -14,5 +14,5 @@ export default function Layout({ children }) {
       <Header />
       {children}
     </div>
-  )
+  );
 }

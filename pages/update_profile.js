@@ -6,8 +6,8 @@ import Avatar from '../components/Avatar';
 import UploadButton from '../components/UploadButton';
 import AuthProvider from '../components/AuthProvider';
 
-import { DEFAULT_AVATARS_BUCKET } from '../lib/constants'
-import { useState, useEffect } from 'react'
+import { DEFAULT_AVATARS_BUCKET } from '../lib/constants';
+import { useState, useEffect } from 'react';
 import { useUser, RequireAuth } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
 
@@ -27,8 +27,8 @@ function UpdateProfile() {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    getProfile()
-  }, [session])
+    getProfile();
+  }, [session]);
 
   async function signOut() {
     const { error } = await supabase.auth.signOut()
@@ -37,17 +37,17 @@ function UpdateProfile() {
 
   async function uploadAvatar(event) {
     try {
-      setUploading(true)
+      setUploading(true);
 
       if (!event.target.files || event.target.files.length == 0) {
         throw 'Você deve selecionar uma imagem para fazer upload.'
       }
 
-      const user = supabase.auth.user()
-      const file = event.target.files[0]
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${session?.user.id}${Math.random()}.${fileExt}`
-      const filePath = `${fileName}`
+      const user = supabase.auth.user();
+      const file = event.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${session?.user.id}${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
         .from(DEFAULT_AVATARS_BUCKET)
@@ -70,32 +70,32 @@ function UpdateProfile() {
         data: { avatar: filePath }
       })
       if (updatePError) {
-        setError(updatePError.message)
+        setError(updatePError.message);
       } else {
-        setDoneUploading(true)
-        setTimeout(() => setDoneUploading(false), 3000)
-        setMessageUpLoading('Avatar atualizado!')
-        setTimeout(() => setMessageUpLoading(''), 3000)
+        setDoneUploading(true);
+        setTimeout(() => setDoneUploading(false), 3000);
+        setMessageUpLoading('Avatar atualizado!');
+        setTimeout(() => setMessageUpLoading(''), 3000);
       }
 
-      setAvatar(null)
-      setAvatar(filePath)
+      setAvatar(null);
+      setAvatar(filePath);
     } catch (error) {
-      alert(error.message)
-      setDoneUploading(false)
+      alert(error.message);
+      setDoneUploading(false);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
   }
 
   function setProfile(profile) {
-    setAvatar(profile.avatar_url)
-    setUsername(profile.username)
+    setAvatar(profile.avatar_url);
+    setUsername(profile.username);
   }
 
   async function getProfile() {
     try {
-      setLoading(true)
+      setLoading(true);
       const user = supabase.auth.user()
 
       let { data, error } = await supabase
@@ -108,19 +108,19 @@ function UpdateProfile() {
         throw error
       }
 
-      setProfile(data)
+      setProfile(data);
     } catch (error) {
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   async function updateProfile() {
     try {
-      setLoading(true)
-      setError('')
-      setMessage('')
-      const user = supabase.auth.user()
+      setLoading(true);
+      setError('');
+      setMessage('');
+      const user = supabase.auth.user();
 
       const updates = {
         id: user.id,
@@ -129,7 +129,7 @@ function UpdateProfile() {
       }
 
       if (!username || username?.length < 3 || username?.length > 16 || username.includes(' ')) {
-        setError('Digite um Username de 3 à 16 digitos')
+        setError('Digite um Username de 3 à 16 digitos');
       } else {
         let { error } = await supabase.from('profiles').upsert(updates, {
           returning: 'minimal', // Don't return the value after inserting
@@ -141,26 +141,26 @@ function UpdateProfile() {
             data: { username: username }
           })
           if (updateError) {
-            setError(updateError.message)
+            setError(updateError.message);
           } else {
-            setMessage('Perfil atualizado!')
-            setDone(true)
-            setTimeout(() => setMessage(''), 3000)
-            setTimeout(() => setDone(false), 3000)
+            setMessage('Perfil atualizado!');
+            setDone(true);
+            setTimeout(() => setMessage(''), 3000);
+            setTimeout(() => setDone(false), 3000);
           }
         }
       }
 
     } catch (error) {
       if (error != 'duplicate key value violates unique constraint "profiles_username_key"') {
-        setError('Username já existe!')
+        setError('Username já existe!');
       } else {
-        setError(error.message)
+        setError(error.message);
       }
-      setLoading(false)
-      setDone(false)
+      setLoading(false);
+      setDone(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
   return (
@@ -278,7 +278,7 @@ function UpdateProfile() {
         </div>
       )}
     </>
-  )
+  );
 }
 
 export default UpdateProfile;

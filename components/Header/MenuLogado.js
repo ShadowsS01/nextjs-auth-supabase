@@ -92,4 +92,4 @@ const MenuLogado = ({ profile }) => (
   </>
 )
 
-export default MenuLogado
+export default MenuLogado;

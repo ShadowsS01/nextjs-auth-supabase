@@ -1,25 +1,25 @@
-import ProfileList from '../components/ProfileList'
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabaseClient'
-import { Profile } from '../lib/constants'
-import { useUser, RequireUpProfile } from '../lib/UserContext'
-import Link from 'next/link'
+import ProfileList from '../components/ProfileList';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { Profile } from '../lib/constants';
+import { useUser, RequireUpProfile } from '../lib/UserContext';
+import Link from 'next/link';
 import { AiOutlineLoading } from 'react-icons/ai';
-import Head from 'next/head'
+import Head from 'next/head';
 
 export default function Community() {
-  const { user, session } = useUser()
-  const [profiles, setProfiles] = useState<Profile[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const { user, session } = useUser();
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (user) {
     RequireUpProfile();
-  }
+  };
 
   useEffect(() => {
-    getPublicProfiles()
-  }, [])
+    getPublicProfiles();
+  }, []);
 
   async function getPublicProfiles() {
     try {
@@ -30,9 +30,9 @@ export default function Community() {
         .order('updated_at', { ascending: false })
 
       if (error || !data) {
-        throw error || new Error('No data')
+        throw error || new Error('No data');
       }
-      setProfiles(data)
+      setProfiles(data);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -87,5 +87,5 @@ export default function Community() {
         </div>
       }
     </div>
-  )
+  );
 }

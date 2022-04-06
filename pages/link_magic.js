@@ -6,39 +6,39 @@ import { AuthRedirect } from '../lib/UserContext';
 import { supabase } from '../lib/supabaseClient';
 
 const LinkMagic = () => {
-  AuthRedirect()
+  AuthRedirect();
 
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
 
   const handleMagicLinkSignIn = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMessage('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setMessage('');
+    setLoading(true);
 
     if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
-      setError('Por favor, forneça um endereço de e-mail válido')
+      setError('Por favor, forneça um endereço de e-mail válido');
     } else {
       const { error } = await supabase.auth.signIn({ email })
       if (error) {
         if (error != 'Unable to validate email address: invalid format') {
-          setError('Por favor, forneça um endereço de e-mail válido.')
+          setError('Por favor, forneça um endereço de e-mail válido.');
         } else {
-          setError(error.message)
+          setError(error.message);
         }
-        setLoading(false)
-        setDone(false)
+        setLoading(false);
+        setDone(false);
       } else {
-        setDone(true)
-        setLoading(false)
-        setMessage('Verifique seu e-mail para o link mágico')
+        setDone(true);
+        setLoading(false);
+        setMessage('Verifique seu e-mail para o link mágico');
       }
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -119,7 +119,7 @@ const LinkMagic = () => {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default LinkMagic
+export default LinkMagic;

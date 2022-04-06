@@ -7,43 +7,43 @@ import AuthProvider from '../components/AuthProvider';
 import { supabase } from '../lib/supabaseClient';
 
 function PasswordReset() {
-  const { user, session } = useUser()
+  const { user, session } = useUser();
 
   if (user) {
     RequireUpProfile();
-  }
+  };
 
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [done, setDone] = useState(false)
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
 
   const handlePasswordReset = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMessage('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setMessage('');
+    setLoading(true);
 
     if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
-      setError('Por favor, forneça um endereço de e-mail válido.')
-      setDone(false)
+      setError('Por favor, forneça um endereço de e-mail válido.');
+      setDone(false);
     }
     else {
       const { error } = await supabase.auth.api.resetPasswordForEmail(email)
       if (error) {
         if (error != 'Unable to validate email address: invalid format') {
-          setError('Por favor, forneça um endereço de e-mail válido.')
+          setError('Por favor, forneça um endereço de e-mail válido.');
         } else {
-          setError(error.message)
+          setError(error.message);
         }
       } else {
-        setLoading(false)
-        setDone(true)
-        setMessage('Verifique seu e-mail para o link de redefinição de senha')
+        setLoading(false);
+        setDone(true);
+        setMessage('Verifique seu e-mail para o link de redefinição de senha');
       }
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -132,7 +132,7 @@ function PasswordReset() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default PasswordReset;

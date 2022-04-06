@@ -7,11 +7,11 @@ import { supabase } from "../lib/supabaseClient";
 
 export default function ProfileUser() {
   RequireAuth();
-  const { user, session } = useUser()
+  const { user, session } = useUser();
 
   if (user) {
     RequireUpProfile();
-  }
+  };
 
   return (
     <>
@@ -126,5 +126,5 @@ export default function ProfileUser() {
       )
       }
     </>
-  )
+  );
 }

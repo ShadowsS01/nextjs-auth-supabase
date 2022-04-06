@@ -5,7 +5,7 @@ import AuthProvider from '../components/AuthProvider';
 import { useUser, RequireUpProfile } from '../lib/UserContext';
 
 const Home = () => {
-  const [authView, setAuthView] = useState('home')
+  const [authView, setAuthView] = useState('home');
   const { user, session } = useUser();
 
   if (user) {
@@ -19,9 +19,9 @@ const Home = () => {
     })
 
     return () => {
-      authListener.unsubscribe()
+      authListener.unsubscribe();
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -74,7 +74,7 @@ const Home = () => {
         ) : null}
       </>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

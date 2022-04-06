@@ -3,11 +3,11 @@ import { BiShowAlt, BiHide } from 'react-icons/bi';
 export default function ReadPassword(props) {
   function IsRead() {
     if (props.password === '') {
-      props.setRead('password')
+      props.setRead('password');
     } else if (props.read == 'password') {
-      props.setRead('text')
+      props.setRead('text');
     } else {
-      props.setRead('password')
+      props.setRead('password');
     }
   }
 
@@ -35,5 +35,5 @@ export default function ReadPassword(props) {
         </button>
       }
     </div>
-  )
+  );
 }

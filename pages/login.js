@@ -22,24 +22,24 @@ const Login = () => {
     setLoading(true);
 
     if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
-      setError('Por favor, forneça um endereço de e-mail válido')
+      setError('Por favor, forneça um endereço de e-mail válido');
     } else if (password.length < 6 || password.includes(' ')) {
-      setError('A senha deve ter pelo menos 6 caracteres')
+      setError('A senha deve ter pelo menos 6 caracteres');
     } else {
       const { error: signInError } = await supabase.auth.signIn({
         email,
         password,
       })
       if (signInError) {
-        setDone(false)
-        setLoading(false)
-        setError('Credenciais de login inválidas')
+        setDone(false);
+        setLoading(false);
+        setError('Credenciais de login inválidas');
       } else {
-        setDone(true)
-        setLoading(false)
+        setDone(true);
+        setLoading(false);
       }
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -151,7 +151,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;

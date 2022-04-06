@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useUser } from '../../lib/UserContext';
 
 const Header = () => {
-  const { user, session } = useUser()
+  const { user, session } = useUser();
 
   return <>
     <header className="flex items-center fixed top-0 left-0 w-full flex-row justify-between dark:shadow-2xl 
@@ -29,4 +29,4 @@ const Header = () => {
   </>
 };
 
-export default Header
+export default Header;

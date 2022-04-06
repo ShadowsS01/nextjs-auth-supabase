@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
 import { AiOutlineLoading, AiFillGithub, AiOutlineGoogle } from 'react-icons/ai';
-import { MdDone } from 'react-icons/md'
+import { MdDone } from 'react-icons/md';
 import { supabase } from '../lib/supabaseClient';
 import ReadPassword from './ReadPassword';
 
@@ -66,7 +66,7 @@ function AuthProvider() {
         </span>
       </div>
     </div>
-  )
+  );
 }
 
 function ButtonSubmit(props) {
@@ -108,7 +108,7 @@ function ButtonSubmit(props) {
           </div>
       }
     </div>
-  )
+  );
 }
 
 function UpdatePassword() {
@@ -116,7 +116,7 @@ function UpdatePassword() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
   const [read, setRead] = useState('password');
 
   const handlePasswordReset = async () => {
@@ -125,20 +125,20 @@ function UpdatePassword() {
     setLoading(true);
 
     if (password.length < 6 || password.includes(' ')) {
-      setError('A senha deve ter pelo menos 6 caracteres')
+      setError('A senha deve ter pelo menos 6 caracteres');
     }
     else {
       const { error } = await supabase.auth.update({ password })
       if (error) {
-        setError(error.message)
+        setError(error.message);
       } else {
-        setMessage('Sua senha foi atualizada')
-        setDone(true)
+        setMessage('Sua senha foi atualizada');
+        setDone(true);
       }
-      setLoading(false)
+      setLoading(false);
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <>
@@ -194,7 +194,7 @@ function UpdatePassword() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 AuthProvider.ButtonSubmit = ButtonSubmit;

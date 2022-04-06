@@ -1,5 +1,5 @@
 import { AiOutlineLoading } from 'react-icons/ai';
-import { MdDone } from 'react-icons/md'
+import { MdDone } from 'react-icons/md';
 
 function UploadButton(props) {
   return (
@@ -56,7 +56,7 @@ function UploadButton(props) {
         disabled={props.loading || props.done}
       />
     </div>
-  )
+  );
 }
 
 export default UploadButton;

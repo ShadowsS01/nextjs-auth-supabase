@@ -1,7 +1,7 @@
-import ProfileCard from './ProfileCard'
-import { Profile } from '../lib/constants'
-import { supabase } from '../lib/supabaseClient'
-import { useEffect, useReducer } from 'react'
+import ProfileCard from './ProfileCard';
+import { Profile } from '../lib/constants';
+import { supabase } from '../lib/supabaseClient';
+import { useEffect, useReducer } from 'react';
 
 /**
  * Since we want this component to update in realtime,
@@ -34,8 +34,8 @@ const handleDatabaseEvent = (state: State, action: Action) => {
 }
 
 export default function ProfileList({ profiles }: ProfileListProps) {
-  const initialState: State = { profiles }
-  const [state, dispatch] = useReducer(handleDatabaseEvent, initialState)
+  const initialState: State = { profiles };
+  const [state, dispatch] = useReducer(handleDatabaseEvent, initialState);
 
   useEffect(() => {
     const subscription = supabase
@@ -51,8 +51,8 @@ export default function ProfileList({ profiles }: ProfileListProps) {
   }, [])
 
   useEffect(() => {
-    dispatch({ type: 'set', payload: profiles })
-  }, [profiles])
+    dispatch({ type: 'set', payload: profiles });
+  }, [profiles]);
 
   return (
     <>
@@ -73,5 +73,5 @@ export default function ProfileList({ profiles }: ProfileListProps) {
         </div>
       )}
     </>
-  )
+  );
 }

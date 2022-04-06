@@ -28,9 +28,9 @@ const SignUp = () => {
     setLoading(true);
 
     if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
-      setError('Por favor, forneça um endereço de e-mail válido')
+      setError('Por favor, forneça um endereço de e-mail válido');
     } else if (password.length < 6 || password.includes(' ')) {
-      setError('A senha deve ter pelo menos 6 caracteres')
+      setError('A senha deve ter pelo menos 6 caracteres');
     } else {
       const { error: signUpError } = await supabase.auth.signUp(
         {
@@ -40,15 +40,15 @@ const SignUp = () => {
         data: { username: username, avatar: avatar_url, website: website }
       })
       if (signUpError) {
-        setLoading(false)
-        setError(signUpError.message)
+        setLoading(false);
+        setError(signUpError.message);
       } else {
-        setLoading(false)
-        setDone(true)
-        setMessage('Verifique seu e-mail para o link de confirmação')
+        setLoading(false);
+        setDone(true);
+        setMessage('Verifique seu e-mail para o link de confirmação');
       }
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -145,9 +145,8 @@ const SignUp = () => {
           </div>
         </div>
       </div >
-
     </>
-  )
+  );
 }
 
 export default SignUp;

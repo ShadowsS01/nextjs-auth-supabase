@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
-import { DEFAULT_AVATARS_BUCKET } from '../lib/constants'
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { DEFAULT_AVATARS_BUCKET } from '../lib/constants';
 import { FaRegUserCircle } from 'react-icons/fa';
 
 export default function Avatar({ url, avatarAlt, size, radius }) {
-  const [avatarUrl, setAvatarUrl] = useState('')
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   useEffect(() => {
-    if (url) downloadImage(url)
-  }, [url])
+    if (url) downloadImage(url);
+  }, [url]);
 
   async function downloadImage(path) {
     try {
@@ -17,8 +17,8 @@ export default function Avatar({ url, avatarAlt, size, radius }) {
       if (error) {
         throw error
       }
-      const url = URL.createObjectURL(data)
-      setAvatarUrl(url)
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
     } catch (error) {
     }
   }
@@ -27,5 +27,5 @@ export default function Avatar({ url, avatarAlt, size, radius }) {
     <img src={avatarUrl} alt={`Avatar-${avatarAlt}`} className="object-cover" style={{ height: size, width: size, borderRadius: radius }} />
   ) : (
     <FaRegUserCircle className='rounded-md' style={{ height: size, width: size, borderRadius: radius }} />
-  )
+  );
 }

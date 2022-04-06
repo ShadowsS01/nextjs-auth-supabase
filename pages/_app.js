@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
         </Layout>
       </ThemeProvider>
     </UserContextProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
