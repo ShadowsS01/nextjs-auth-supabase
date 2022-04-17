@@ -123,9 +123,16 @@ function UpdatePassword() {
     setError('');
     setMessage('');
     setLoading(true);
+    const inputPassword = document.getElementById('password');
 
     if (password.length < 6 || password.includes(' ')) {
       setError('A senha deve ter pelo menos 6 caracteres');
+      inputPassword.classList.replace('inputMail', 'inputError');
+      inputPassword.focus();
+      inputPassword.onkeydown = function onKeyDownPassword() {
+        inputPassword.classList.replace("inputError", "inputMail");
+        setError('');
+      };
     }
     else {
       const { error } = await supabase.auth.update({ password })
@@ -150,7 +157,7 @@ function UpdatePassword() {
           <title>Redefinir Senha</title>
         </Head>
 
-        <div className="max-w-lg w-full max-w-md">
+        <div className="w-full max-w-md">
           <div>
             <h3 className='text-2xl font-semibold'
             >
@@ -161,7 +168,7 @@ function UpdatePassword() {
             <div>
               <div className='space-y-2'>
                 <div className='flex justify-between self-center items-center'>
-                  <label htmlFor="senha" className='font-medium'>
+                  <label htmlFor="password" className='font-medium'>
                     Nova senha:
                   </label>
                   <ReadPassword password={password} setRead={setRead} read={read} />
@@ -171,17 +178,32 @@ function UpdatePassword() {
                     className="inputMail"
                     minLength={6}
                     type={read}
-                    id="senha"
+                    id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <div className="text-red-600 font-medium selection:bg-pink-700/20 
+                      dark:selection:bg-pink-600/10 mt-0.5">
+                    {error == 'A senha deve ter pelo menos 6 caracteres' ?
+                      (
+                        <>
+                          <p className='text-sm'>
+                            {error}
+                          </p>
+                        </>
+                      ) : (<></>)}
+                  </div>
                 </div>
               </div>
             </div>
             <div className='mt-2'>
-              <div className='my-2 mb-4 text-center'>
-                {error && <div className='font-medium text-red-600'>{error}</div>}
-                {message && <div className='text-green-600 font-medium'>{message}</div>}
+              <div className={`text-center font-bold
+                  ${error ? 'text-red-600 selection:bg-pink-700/20 dark:selection:bg-pink-600/10' :
+                  'text-green-600 selection:bg-green-600/30 dark:selection:bg-green-600/20'}`}>
+                {error == 'A senha deve ter pelo menos 6 caracteres' ? <></> :
+                  <div>{error}</div>
+                }
+                {message && <div>{message}</div>}
               </div>
               <div className='mt-2'>
                 <ButtonSubmit onSubmit={handlePasswordReset} loading={loading} done={done}

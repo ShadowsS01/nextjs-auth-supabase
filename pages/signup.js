@@ -26,11 +26,28 @@ const SignUp = () => {
     setError('');
     setMessage('');
     setLoading(true);
+    const inputEmail = document.getElementById('email');
+    const inputPassword = document.getElementById('password');
 
-    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
+    if (!inputEmail || !inputPassword) {
+      alert("Parece que mexeram nos id's do site, irei atualizar!");
+      location.reload();
+    } else if (!email.includes('@') || !email.includes('.') || !email.trim() || email.includes('@.') || email.includes('.@')) {
       setError('Por favor, forneça um endereço de e-mail válido');
+      inputEmail.classList.replace('inputMail', 'inputError');
+      inputEmail.focus();
+      inputEmail.onkeydown = function onKeyDownEmail() {
+        inputEmail.classList.replace("inputError", "inputMail");
+        setError('');
+      };
     } else if (password.length < 6 || password.includes(' ')) {
       setError('A senha deve ter pelo menos 6 caracteres');
+      inputPassword.classList.replace('inputMail', 'inputError');
+      inputPassword.focus();
+      inputPassword.onkeydown = function onKeyDownPassword() {
+        inputPassword.classList.replace("inputError", "inputMail");
+        setError('');
+      };
     } else {
       const { error: signUpError } = await supabase.auth.signUp(
         {
@@ -61,7 +78,7 @@ const SignUp = () => {
           <title>Registrar-se</title>
         </Head>
 
-        <div className="max-w-lg w-full max-w-md">
+        <div className="w-full max-w-md">
           <div>
             <h3 className='text-2xl font-semibold'
             >
@@ -81,24 +98,27 @@ const SignUp = () => {
                   </label>
                   <div>
                     <input
-                      className="inputMail peer invalid:border-red-600/60 invalid:hover:border-red-700
-                      invalid:focus:ring-red-700/50 invalid:focus:border-red-700 invalid:focus:caret-red-700
-                      invalid:selection:bg-pink-700/20 invalid:dark:selection:bg-pink-600/10"
+                      className="inputMail"
                       type="email"
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div className="hidden peer-invalid:inline text-red-600 font-medium 
-                      selection:bg-pink-700/20 dark:selection:bg-pink-600/10">
-                      <p className='mt-2 text-sm'>
-                        Por favor, forneça um endereço de e-mail válido.
-                      </p>
+                    <div className="text-red-600 font-medium selection:bg-pink-700/20 
+                      dark:selection:bg-pink-600/10 mt-0.5">
+                      {error == 'Por favor, forneça um endereço de e-mail válido' ?
+                        (
+                          <>
+                            <p className='text-sm'>
+                              {error}
+                            </p>
+                          </>
+                        ) : (<></>)}
                     </div>
                   </div>
                 </div>
 
-                <div className='mt-6 space-y-2'>
+                <div className={`space-y-2 ${error == 'Por favor, forneça um endereço de e-mail válido' ? 'mt-2' : 'mt-6'}`}>
                   <div className='flex justify-between self-center items-center'>
                     <label htmlFor="password" className='font-medium'>
                       Senha:
@@ -114,18 +134,33 @@ const SignUp = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
+                    <div className="text-red-600 font-medium selection:bg-pink-700/20 
+                      dark:selection:bg-pink-600/10 mt-0.5">
+                      {error == 'A senha deve ter pelo menos 6 caracteres' ?
+                        (
+                          <>
+                            <p className='text-sm'>
+                              {error}
+                            </p>
+                          </>
+                        ) : (<></>)}
+                    </div>
                   </div>
                 </div>
               </div>
 
 
-              <div className='mt-4'>
-                <div className='mt-2 text-center'>
-                  {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
+              <div className={`${error == 'Credenciais de login inválidas' ? 'mt-0' : 'mt-4'}`}>
+                <div className={`text-center font-bold
+                  ${error ? 'text-red-600 selection:bg-pink-700/20 dark:selection:bg-pink-600/10' :
+                    'text-green-600 selection:bg-green-600/30 dark:selection:bg-green-600/20'}`}>
+                  {error == 'Por favor, forneça um endereço de e-mail válido' || error == 'A senha deve ter pelo menos 6 caracteres' ? <></> :
+                    <div>{error}</div>
+                  }
+                  {message && <div>{message}</div>}
                 </div>
 
-                <div className='mt-6'>
+                <div className='mt-4'>
                   <AuthProvider.ButtonSubmit
                     onSubmit={handleSignUp} loading={loading} done={done} title={'Criar conta'}
                     classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}

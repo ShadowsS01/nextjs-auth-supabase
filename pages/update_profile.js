@@ -116,59 +116,87 @@ function UpdateProfile() {
   }
 
   async function updateProfile() {
-    try {
-      setLoading(true);
-      setError('');
-      setMessage('');
-      const user = supabase.auth.user();
+    const inputUsername = document.getElementById('username');
+    if (!inputUsername) {
+      alert("Parece que mexeram nos id's do site, irei atualizar!");
+      location.reload();
+    } else {
+      try {
+        setLoading(true);
+        setError('');
+        setMessage('');
+        const user = supabase.auth.user();
 
-      const updates = {
-        id: user.id,
-        username,
-        updated_at: new Date(),
-      }
+        const updates = {
+          id: user.id,
+          username,
+          updated_at: new Date(),
+        }
 
-      if (!username || username?.length < 3 || username?.length > 16 || username.includes(' ')) {
-        setError('Digite um Username de 3 à 16 digitos');
-      } else {
-        let { error } = await supabase.from('profiles').upsert(updates, {
-          returning: 'minimal', // Don't return the value after inserting
-        })
-        if (error) {
-          throw error
+        if (!username || username?.length < 3 || username?.length > 16) {
+          setError('Digite um Username de 3 à 16 digitos');
+          inputUsername.classList.replace('inputMail', 'inputError');
+          inputUsername.focus();
+          inputUsername.onkeydown = function onKeyDownEmail() {
+            inputUsername.classList.replace("inputError", "inputMail");
+            setError('');
+          };
+        } else if (username.includes(' ')) {
+          setError('Username não pode ter espaços vazios');
+          inputUsername.classList.replace('inputMail', 'inputError');
+          inputUsername.focus();
+          inputUsername.onkeydown = function onKeyDownEmail() {
+            inputUsername.classList.replace("inputError", "inputMail");
+            setError('');
+          };
         } else {
-          const { error: updateError } = await supabase.auth.update({
-            data: { username: username }
+          let { error } = await supabase.from('profiles').upsert(updates, {
+            returning: 'minimal', // Don't return the value after inserting
           })
-          if (updateError) {
-            setError(updateError.message);
+          if (error) {
+            throw error
           } else {
-            setMessage('Perfil atualizado!');
-            setDone(true);
-            setTimeout(() => setMessage(''), 3000);
-            setTimeout(() => setDone(false), 3000);
+            const { error: updateError } = await supabase.auth.update({
+              data: { username: username }
+            })
+            if (updateError) {
+              setError(updateError.message);
+            } else {
+              setMessage('Perfil atualizado!');
+              setDone(true);
+              setTimeout(() => setMessage(''), 3000);
+              setTimeout(() => setDone(false), 3000);
+            }
           }
         }
+      } catch (error) {
+        if (error.message == 'duplicate key value violates unique constraint "profiles_username_key"') {
+          setUsername('');
+          inputUsername.placeholder = 'Username já existe!';
+          inputUsername.classList.add('placeholder:text-red-600')
+          inputUsername.classList.replace('inputMail', 'inputError');
+          inputUsername.focus();
+          inputUsername.onkeydown = function onKeyDownEmail() {
+            inputUsername.placeholder = '';
+            inputUsername.classList.remove('placeholder:text-red-600')
+            inputUsername.classList.replace("inputError", "inputMail");
+            setError('');
+          };
+        } else {
+          setError(error.message);
+        }
+        setLoading(false);
+        setDone(false);
+      } finally {
+        setLoading(false);
       }
-
-    } catch (error) {
-      if (error != 'duplicate key value violates unique constraint "profiles_username_key"') {
-        setError('Username já existe!');
-      } else {
-        setError(error.message);
-      }
-      setLoading(false);
-      setDone(false);
-    } finally {
-      setLoading(false);
     }
   }
   return (
     <>
       {user && (
         <div className="authcontainer text-black dark:text-white flex items-center justify-center 
-          rounded-lg p-8 border border-black/10 dark:border-transparent shadow-2xl shadow-black/50 dark:shadow-blue-600/30
-          dark:border-transparent dark:bg-zinc-900 font-medium transition-colors duration-300">
+          rounded-lg p-8 border border-black/10 dark:border-transparent shadow-2xl shadow-black/50 dark:shadow-blue-600/30 dark:bg-zinc-900 font-medium transition-colors duration-300">
 
           <Head>
             {!user.user_metadata.username || !user.user_metadata.avatar ?
@@ -178,7 +206,7 @@ function UpdateProfile() {
               </title>
             }
           </Head>
-          <div className="max-w-lg w-full max-w-md">
+          <div className="w-full max-w-md">
             <div>
               <h3 className='text-2xl font-semibold'
               >
@@ -208,11 +236,11 @@ function UpdateProfile() {
               <div className='mt-3 -mb-5 selection:bg-green-600/30'>
                 {messageUpLoading && <div className='text-green-600 font-medium'>{messageUpLoading}</div>}
               </div>
-              <div className='flex flex-col mt-8 space-y-5'>
-                <div className='space-y-1 opacity-50'>
+              <div className='flex flex-col mt-8 space-y-2'>
+                {/* <div className='space-y-1'>
                   <label htmlFor="email">Email:</label>
                   <input className='inputMail' id="email" type="text" value={session.user.email} disabled />
-                </div>
+                </div> */}
 
                 <div className='space-y-1'>
                   <label htmlFor="username">Username:</label>
@@ -225,17 +253,35 @@ function UpdateProfile() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
+                  <div className="text-red-600 font-medium selection:bg-pink-700/20 
+                      dark:selection:bg-pink-600/10 mt-0.5">
+                    {error == 'Digite um Username de 3 à 16 digitos' || error == 'Username não pode ter espaços vazios' ?
+                      (
+                        <>
+                          <p className='text-sm'>
+                            {error}
+                          </p>
+                        </>
+                      ) : (<></>)}
+                  </div>
                 </div>
 
-                <div className='mb-4 text-center'>
-                  {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium selection:bg-green-600/30'>{message}</div>}
-                </div>
-                <div>
-                  <AuthProvider.ButtonSubmit
-                    onSubmit={updateProfile} loading={loading} done={done} title={'Atualizar'}
-                    classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
-                    classNameP={''} className={'buttonLogin'} />
+                <div className='space-y-2'>
+                  <div className={`text-center font-bold
+                  ${error ? 'text-red-600 selection:bg-pink-700/20 dark:selection:bg-pink-600/10' :
+                      'text-green-600 selection:bg-green-600/30 dark:selection:bg-green-600/20'}`}>
+                    {error == 'Digite um Username de 3 à 16 digitos' || error == 'Username não pode ter espaços vazios' ?
+                      <></> :
+                      <div>{error}</div>
+                    }
+                    {message && <div>{message}</div>}
+                  </div>
+                  <div>
+                    <AuthProvider.ButtonSubmit
+                      onSubmit={updateProfile} loading={loading} done={done} title={'Atualizar'}
+                      classNameDone={'h-7 w-7 text-green-600'} classNameLoading={'animate-spin h-7 w-7 mr-2'}
+                      classNameP={''} className={'buttonLogin'} />
+                  </div>
                 </div>
               </div>
 

@@ -19,14 +19,30 @@ const LinkMagic = () => {
     setError('');
     setMessage('');
     setLoading(true);
+    const inputEmail = document.getElementById('email');
 
-    if (!email.includes('@') || !email.includes('.') || email.includes(' ') || email.includes('@.')) {
+    if (!inputEmail) {
+      alert("Parece que mexeram nos id's do site, irei atualizar!");
+      location.reload();
+    } else if (!email.includes('@') || !email.includes('.') || !email.trim() || email.includes('@.') || email.includes('.@')) {
       setError('Por favor, forneça um endereço de e-mail válido');
+      inputEmail.classList.replace('inputMail', 'inputError');
+      inputEmail.focus();
+      inputEmail.onkeydown = function onKeyDownEmail() {
+        inputEmail.classList.replace("inputError", "inputMail");
+        setError('');
+      };
     } else {
       const { error } = await supabase.auth.signIn({ email })
       if (error) {
-        if (error != 'Unable to validate email address: invalid format') {
-          setError('Por favor, forneça um endereço de e-mail válido.');
+        if (error.message == 'Unable to validate email address: invalid format') {
+          setError('Por favor, forneça um endereço de e-mail válido');
+          inputEmail.classList.replace('inputMail', 'inputError');
+          inputEmail.focus();
+          inputEmail.onkeydown = function onKeyDownEmail() {
+            inputEmail.classList.replace("inputError", "inputMail");
+            setError('');
+          };
         } else {
           setError(error.message);
         }
@@ -51,7 +67,7 @@ const LinkMagic = () => {
           <title>Link Mágico</title>
         </Head>
 
-        <div className="max-w-lg w-full max-w-md">
+        <div className="w-full max-w-md">
           <div>
             <h3 className='text-2xl font-semibold'
             >
@@ -71,19 +87,22 @@ const LinkMagic = () => {
                   </label>
                   <div>
                     <input
-                      className="inputMail peer invalid:border-red-600/60 invalid:hover:border-red-700
-                      invalid:focus:ring-red-700/50 invalid:focus:border-red-700 invalid:focus:caret-red-700
-                      invalid:selection:bg-pink-700/20 invalid:dark:selection:bg-pink-600/10"
+                      className="inputMail"
                       type="email"
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div className="hidden peer-invalid:inline text-red-600 font-medium
-                      selection:bg-pink-700/20 dark:selection:bg-pink-600/10">
-                      <p className='mt-2 text-sm'>
-                        Por favor, forneça um endereço de e-mail válido.
-                      </p>
+                    <div className="text-red-600 font-medium selection:bg-pink-700/20 
+                      dark:selection:bg-pink-600/10 mt-0.5">
+                      {error == 'Por favor, forneça um endereço de e-mail válido' ?
+                        (
+                          <>
+                            <p className='text-sm'>
+                              {error}
+                            </p>
+                          </>
+                        ) : (<></>)}
                     </div>
                   </div>
                 </div>
@@ -91,9 +110,13 @@ const LinkMagic = () => {
               </div>
 
               <div className='mt-2'>
-                <div className='my-4 text-center'>
-                  {error && <div className='font-medium text-red-600'>{error}</div>}
-                  {message && <div className='text-green-600 font-medium'>{message}</div>}
+                <div className={`text-center font-bold
+                  ${error ? 'text-red-600 selection:bg-pink-700/20 dark:selection:bg-pink-600/10' :
+                    'text-green-600 selection:bg-green-600/30 dark:selection:bg-green-600/20'}`}>
+                  {error == 'Por favor, forneça um endereço de e-mail válido' ? <></> :
+                    <div>{error}</div>
+                  }
+                  {message && <div>{message}</div>}
                 </div>
                 <div className='mt-2'>
                   <AuthProvider.ButtonSubmit
